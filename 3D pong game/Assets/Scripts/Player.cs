@@ -39,7 +39,7 @@ public class Player : MonoBehaviour
     private Vector3 GetWorldPositionFromMouse()
     {
         Vector3 mousePos = Input.mousePosition;
-        mousePos.z = _mainCamera.nearClipPlane + 10;
+        mousePos.z = _mainCamera.nearClipPlane + 5.2f;
 
         return _mainCamera.ScreenToWorldPoint(mousePos);
     }
