@@ -43,4 +43,14 @@ public class Player : MonoBehaviour
 
         return _mainCamera.ScreenToWorldPoint(mousePos);
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Ball ball = other.gameObject.GetComponent<Ball>();
+
+        if (ball != null)
+        {
+            other.rigidbody.velocity = Vector3.Reflect(this.transform.position, Vector3.right);
+        }
+    }
 }
