@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
     {
         _direction = GetWorldPositionFromMouse() * _speed * Time.deltaTime;
         _direction.x = Mathf.Clamp(_direction.x, -10f, 10f);
-        _direction.y = Mathf.Clamp(_direction.y, -6f, 6f);
+        _direction.y = Mathf.Clamp(_direction.y, -7f, 9f);
 
         _rb.MovePosition(_direction);
     }
@@ -39,18 +39,8 @@ public class Player : MonoBehaviour
     private Vector3 GetWorldPositionFromMouse()
     {
         Vector3 mousePos = Input.mousePosition;
-        mousePos.z = _mainCamera.nearClipPlane + 5.2f;
+        mousePos.z = _mainCamera.nearClipPlane + 14.8f;
 
         return _mainCamera.ScreenToWorldPoint(mousePos);
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        Ball ball = other.gameObject.GetComponent<Ball>();
-
-        if (ball != null)
-        {
-            other.rigidbody.velocity = Vector3.Reflect(this.transform.position, Vector3.right);
-        }
     }
 }

@@ -8,8 +8,10 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private float _speed = 1.0f;
     private Vector3 _velocity;
+    [SerializeField]
+    public float airDensity = 0.1f;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -19,20 +21,15 @@ public class Ball : MonoBehaviour
             Debug.LogError("Ball ridigbody is NULL");
         }
 
-        //direction = Vector3.back * _speed * Time.deltaTime;
         _rb.velocity = Vector3.back * _speed * Time.deltaTime;
         
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
-    }
-
-    private void FixedUpdate()
-    {
-        //_lastVelocity = _rb.velocity;
+        var direction = Vector3.Cross(_rb.angularVelocity, _rb.velocity);
+        var magnitude = 4 / 3f * Mathf.PI * airDensity * Mathf.Pow(1.75f, 3);
+        _rb.AddForce(magnitude * direction);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -44,8 +41,23 @@ public class Ball : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log("Player");
             _velocity = Vector3.Reflect(-other.relativeVelocity, other.contacts[0].normal);
             _rb.velocity = _velocity.normalized * _speed * Time.deltaTime;
         }
     }
 }
+
+//old code
+/*
+         if (other.gameObject.CompareTag("Wall"))
+        {
+            _velocity = Vector3.Reflect(-other.relativeVelocity, other.contacts[0].normal);
+            _rb.velocity = _velocity.normalized * _speed * Time.deltaTime;
+        }
+        if (other.gameObject.CompareTag("Player"))
+        {
+            _velocity = Vector3.Reflect(-other.relativeVelocity, other.contacts[0].normal);
+            _rb.velocity = _velocity.normalized * _speed * Time.deltaTime;
+        }
+ */
